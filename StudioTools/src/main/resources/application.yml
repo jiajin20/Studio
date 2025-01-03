@@ -4,7 +4,7 @@ server:
 
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/studiotools?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
@@ -36,9 +36,9 @@ springdoc:
     # enabled: false
   group-configs:
     # 配置 API 文档分组
-    - group: 'cf'  # 定义文档分组的名称
+    group: 'cf'  # 定义文档分组的名称
       # 定义该分组需要匹配的路径，通常是你希望在 Swagger 文档中展示的控制器接口路径
-      paths-to-match: '/**'  # 匹配所有路径
+    paths-to-match: '/**'  # 匹配所有路径
       # 指定扫描的包路径，只有在此包内的控制器才会包含在该分组的 API 文档中
-      packages-to-scan: com.cf.studio.controller
+    packages-to-scan: com.cf.studio.controller
 

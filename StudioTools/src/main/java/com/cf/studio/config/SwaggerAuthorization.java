@@ -1,7 +1,5 @@
 package com.cf.studio.config;
 
-
-import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
@@ -11,13 +9,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 
-
 /**
  * 添加Swagger全局认证按钮
  * @author Yoooum
  */
 @Configuration
 public class SwaggerAuthorization {
+
     /**
      * 添加全局认证，配置OpenAPI规范
      * @return
@@ -40,12 +38,10 @@ public class SwaggerAuthorization {
      */
     private SecurityScheme securityScheme() {
         return new SecurityScheme()
-                .type(SecurityScheme.Type.HTTP)// 设置认证方式
-                .scheme("Bearer")//方案bearer
-                .bearerFormat("JWT")//格式JWT
-                .name(HttpHeaders.AUTHORIZATION)//认证名称
-                .in(SecurityScheme.In.HEADER);//认证位置
+                .type(SecurityScheme.Type.HTTP) // 设置认证方式
+                .scheme("Bearer") // 方案bearer
+                .bearerFormat("JWT") // 格式JWT
+                .name(HttpHeaders.AUTHORIZATION) // 认证名称
+                .in(SecurityScheme.In.HEADER); // 认证位置
     }
-
-
 }

@@ -22,6 +22,7 @@
             <spring-boot.version>2.6.13</spring-boot.version>
             <knife4j.version>4.0.0</knife4j.version>
             <springdoc.version>1.6.15</springdoc.version>
+            <mybatis.version>3.4.2</mybatis.version>
             <springfox.version>3.0.0</springfox.version>
         </properties>
         <dependencies>
@@ -70,6 +71,13 @@
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-spring-web</artifactId>
                 <version>${springfox.version}</version>
+            </dependency>
+
+            <!-- SpringBoot mybatis模块 -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis.version}</version>
             </dependency>
 
 
