@@ -15,4 +15,13 @@ public class UserServiceImpl implements UserService {
     public User login(String email, String password) {
         return userMapper.login(email, password);
     }
+
+    @Override
+    public int register(String name, String password, String email, String role) {
+        if (userMapper.checkEmailExists(email) > 0) {
+            throw new RuntimeException("该邮箱已被注册");
+        }
+        return userMapper.register(name, password, email, role);
+    }
+
 }

@@ -23,7 +23,7 @@ public class R extends HashMap<String, Object> {
      * 处理成功默认响应信息
      * @return
      */
-    public static R success(String 验证码验证成功){
+    public static R success(){
 
         R r = new R();
         r.put("code", SUCCESS_CODE);
