@@ -1,0 +1,44 @@
+#项目端口
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/studiotools?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  mybatis-plus:
+    configuration:
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+      map-underscore-to-camel-case: true  # 自动映射下划线命名
+    logging:
+      level:
+        com.alibaba.druid.pool: DEBUG  # 打印 Druid 连接池的调试日志
+
+#   swagger配置
+springdoc:
+  swagger-ui:
+    # 设置 Swagger UI 的访问路径，默认是 "/swagger-ui.html"
+    path: /swagger-ui.html
+    # 设置 Swagger UI 页面上的标签（tags）排序方式，这里设置为按字母排序
+    tags-sorter: alpha
+    # 设置 Swagger UI 页面上的操作（operations）排序方式，这里设置为按字母排序
+    operations-sorter: alpha
+    # 关闭 Swagger UI 访问，默认为 true（启用 Swagger UI）。这里可以通过取消注释并设置为 false 来关闭。
+    # enabled: false
+    # 设置 Swagger UI 的版本信息
+    version: 1.0
+  api-docs:
+    # 设置 API 文档的访问路径，默认是 "/v3/api-docs"
+    path: /v3/api-docs
+    # 关闭 API 文档，设置为 false 将禁用访问 /v3/api-docs
+    # enabled: false
+  group-configs:
+    # 配置 API 文档分组
+    - group: 'cf'  # 定义文档分组的名称
+      # 定义该分组需要匹配的路径，通常是你希望在 Swagger 文档中展示的控制器接口路径
+      paths-to-match: '/**'  # 匹配所有路径
+      # 指定扫描的包路径，只有在此包内的控制器才会包含在该分组的 API 文档中
+      packages-to-scan: com.cf.studio.controller
+
