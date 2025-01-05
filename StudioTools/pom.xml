@@ -52,16 +52,23 @@
                 <artifactId>spring-boot-starter-test</artifactId>
                 <scope>test</scope>
             </dependency>
-            <!-- Knife4j Swagger 3 配置 -->
+            <!--  swagger3 配置 -->
             <dependency>
+                <!--  swagger 3	-->
                 <groupId>com.github.xiaoymin</groupId>
-                <artifactId>swagger-bootstrap-ui</artifactId>
-                <version>1.8.5</version>
+                <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+                <version>4.0.0</version>
             </dependency>
             <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
+                <!--    spring doc   -->
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>1.6.15</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-spring-web</artifactId>
+                <version>3.0.0</version>
             </dependency>
 
 

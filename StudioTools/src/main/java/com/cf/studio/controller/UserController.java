@@ -80,6 +80,7 @@ public class UserController {
         try {
             int result = userService.register(name, encodedPassword, email, "member");
             if (result > 0) {
+                session.setAttribute("emailCode", null);
                 return R.successMsg("注册成功");
             } else {
                 return R.error("注册失败");

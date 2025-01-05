@@ -1,5 +1,7 @@
 package com.cf.studio.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import java.io.Serializable;
 
@@ -27,6 +29,7 @@ public class Event implements Serializable {
      * 活动时间
      */
     private Date eventTime;
+    private Date endTime;
 /**
      * 活动地点
      */
@@ -43,6 +46,7 @@ public class Event implements Serializable {
      * 活动组织者姓名
      */
     private String organizerName;
+    private String club_id;
 
 
     public Integer getId() {
@@ -68,7 +72,7 @@ public class Event implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm", timezone = "Asia/Shanghai")
     public Date getEventTime() {
         return eventTime;
     }
@@ -109,5 +113,20 @@ public class Event implements Serializable {
         this.organizerName = organizerName;
     }
 
+    public String getClub_id() {
+        return club_id;
+    }
+
+    public void setClub_id(String club_id) {
+        this.club_id = club_id;
+    }
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm", timezone = "Asia/Shanghai")
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 }
 
