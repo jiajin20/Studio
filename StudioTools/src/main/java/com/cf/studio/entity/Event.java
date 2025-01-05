@@ -46,7 +46,7 @@ public class Event implements Serializable {
      * 活动组织者姓名
      */
     private String organizerName;
-    private String club_id;
+    private Integer clubid;
 
 
     public Integer getId() {
@@ -113,13 +113,14 @@ public class Event implements Serializable {
         this.organizerName = organizerName;
     }
 
-    public String getClub_id() {
-        return club_id;
+    public Integer getClubid() {
+        return clubid;
     }
 
-    public void setClub_id(String club_id) {
-        this.club_id = club_id;
+    public void setClubid(Integer clubid) {
+        this.clubid = clubid;
     }
+
     @JsonFormat(pattern="yyyy-MM-dd HH:mm", timezone = "Asia/Shanghai")
     public Date getEndTime() {
         return endTime;
