@@ -17,6 +17,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String getUserPassword(String email) {
+        return userMapper.getUserPassword(email);
+    }
+
+    @Override
     public int register(String name, String password, String email, String role) {
         if (userMapper.checkEmailExists(email) > 0) {
             throw new RuntimeException("该邮箱已被注册");

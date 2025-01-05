@@ -64,19 +64,7 @@
             <version>3.0.0</version>
             </dependency>
 
-<!--            &lt;!&ndash; Springdoc OpenAPI 配置 &ndash;&gt;-->
-<!--            <dependency>-->
-<!--                <groupId>org.springdoc</groupId>-->
-<!--                <artifactId>springdoc-openapi-ui</artifactId>-->
-<!--                <version>${springdoc.version}</version>-->
-<!--            </dependency>-->
 
-<!--            &lt;!&ndash; Springfox Swagger 配置 &ndash;&gt;-->
-<!--            <dependency>-->
-<!--                <groupId>io.springfox</groupId>-->
-<!--                <artifactId>springfox-spring-web</artifactId>-->
-<!--                <version>${springfox.version}</version>-->
-<!--            </dependency>-->
 
             <!-- SpringBoot mybatis模块 -->
             <dependency>
@@ -96,6 +84,15 @@
                 <artifactId>java-jwt</artifactId>
                 <version>3.18.2</version> <!-- 使用合适的版本 -->
             </dependency>
+            <!-- Spring Security -->
+            <dependency>
+                <groupId>org.mindrot</groupId>
+                <artifactId>jbcrypt</artifactId>
+                <version>0.4</version>
+            </dependency>
+
+
+
 
 
 

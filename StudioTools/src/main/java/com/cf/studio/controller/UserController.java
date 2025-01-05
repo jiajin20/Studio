@@ -3,9 +3,11 @@ package com.cf.studio.controller;
 import com.cf.studio.entity.User;
 import com.cf.studio.service.UserService;
 import com.cf.studio.util.EmailUtil;
+import com.cf.studio.util.PasswordUtil;
 import com.cf.studio.util.R;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -16,12 +18,17 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    private PasswordUtil passwordUtil;
+
     //登录
     @PostMapping("/login")
     public R login(@RequestParam("email") String email,
                    @RequestParam("password") String password) {
-        User user = userService.login(email, password);
-        if (user != null){
+
+        String passwordhash = userService.getUserPassword(email);
+        boolean result = passwordUtil.checkPassword(password, passwordhash);
+        if (result==true){
         return R.successMsg("登录成功");
         }
         return R.error("登录失败");
@@ -69,8 +76,9 @@ public class UserController {
         if (!sessionCode.equals(code)) {
             return R.error("验证码错误");
         }
+       String encodedPassword = passwordUtil.encryptPassword(password);
         try {
-            int result = userService.register(name, password, email, "member");
+            int result = userService.register(name, encodedPassword, email, "member");
             if (result > 0) {
                 return R.successMsg("注册成功");
             } else {

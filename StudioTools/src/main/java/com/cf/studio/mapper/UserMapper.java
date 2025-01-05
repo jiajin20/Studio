@@ -12,4 +12,6 @@ public interface UserMapper {
  // 检查邮箱是否存在
  @Select("SELECT COUNT(*) FROM user WHERE email = #{email}")
  int checkEmailExists(String email);
+ @Select("select password from user where email=#{email}")
+ String getUserPassword(String email);
 }
