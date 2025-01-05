@@ -1,6 +1,9 @@
 package com.cf.studio.util;
 
+import com.cf.studio.entity.Club;
+
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 系统响应信息
@@ -23,7 +26,7 @@ public class R extends HashMap<String, Object> {
      * 处理成功默认响应信息
      * @return
      */
-    public static R success(){
+    public static R success(List<Club> allClubs){
 
         R r = new R();
         r.put("code", SUCCESS_CODE);

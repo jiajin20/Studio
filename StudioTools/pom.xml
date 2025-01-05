@@ -55,23 +55,28 @@
             <!-- Knife4j Swagger 3 配置 -->
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
-                <version>${knife4j.version}</version>
+                <artifactId>swagger-bootstrap-ui</artifactId>
+                <version>1.8.5</version>
+            </dependency>
+            <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
             </dependency>
 
-            <!-- Springdoc OpenAPI 配置 -->
-            <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-ui</artifactId>
-                <version>${springdoc.version}</version>
-            </dependency>
+<!--            &lt;!&ndash; Springdoc OpenAPI 配置 &ndash;&gt;-->
+<!--            <dependency>-->
+<!--                <groupId>org.springdoc</groupId>-->
+<!--                <artifactId>springdoc-openapi-ui</artifactId>-->
+<!--                <version>${springdoc.version}</version>-->
+<!--            </dependency>-->
 
-            <!-- Springfox Swagger 配置 -->
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-spring-web</artifactId>
-                <version>${springfox.version}</version>
-            </dependency>
+<!--            &lt;!&ndash; Springfox Swagger 配置 &ndash;&gt;-->
+<!--            <dependency>-->
+<!--                <groupId>io.springfox</groupId>-->
+<!--                <artifactId>springfox-spring-web</artifactId>-->
+<!--                <version>${springfox.version}</version>-->
+<!--            </dependency>-->
 
             <!-- SpringBoot mybatis模块 -->
             <dependency>
@@ -84,6 +89,12 @@
                 <groupId>javax.mail</groupId>
                 <artifactId>mail</artifactId>
                 <version>1.4.7</version>
+            </dependency>
+            <!-- JWT -->
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>3.18.2</version> <!-- 使用合适的版本 -->
             </dependency>
 
 
