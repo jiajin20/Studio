@@ -1,5 +1,7 @@
 package com.cf.studio.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import java.io.Serializable;
 
@@ -58,7 +60,7 @@ public class Notification implements Serializable {
     public void setSenderName(String senderName) {
         this.senderName = senderName;
     }
-
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "Asia/Shanghai")
     public Date getPublishDate() {
         return publishDate;
     }
