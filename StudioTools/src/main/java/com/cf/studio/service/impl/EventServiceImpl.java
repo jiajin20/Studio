@@ -22,4 +22,24 @@ public class EventServiceImpl implements EventService {
     public List<Event> getEventByClubId(int id) {
         return eventMapper.getEventByClubId(id);
     }
+
+    @Override
+    public int signup(int userid,int eventid, int is_on_leave, String sign_in_code) {
+        Integer registrationId = eventMapper.getRegistrationByUserId(userid, eventid);
+        if (registrationId != null) {
+            return 0;
+        }
+        Integer clubid=eventMapper.getclubByuserid(userid);
+        if (clubid==null){
+            return 0;
+        }
+        String status = eventMapper.getStatusById(eventid);
+        if (!"ongoing".equals(status)) {
+            return 0;
+        }
+        int result = eventMapper.addRegistration(userid, eventid, is_on_leave, sign_in_code,clubid);
+        return result > 0 ? 1 : 0;
+    }
+
+
 }

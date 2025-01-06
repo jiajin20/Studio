@@ -36,6 +36,7 @@ public class EventController {
             return R.successMsg("添加活动成功");
         }else {
             return R.error("添加活动失败");
+
         }
     }
 
@@ -44,4 +45,17 @@ public class EventController {
     public ResponseEntity<List<Event>> getEventByClubId(@RequestParam("id")int id){
         return ResponseEntity.ok(eventService.getEventByClubId(id));
     }
+    @PostMapping("/signup")
+    public R signup(@RequestParam("userid")int userid,
+                    @RequestParam("eventid")int eventid,
+                    @RequestParam("isonleave")int isonleave,
+                    @RequestParam("signincode")String signincode){
+        int result = eventService.signup(userid,eventid,isonleave,signincode);
+        if (result>0){
+            return R.successMsg("签到成功");
+        }else {
+            return R.error("签到失败");
+        }
+    }
+
 }

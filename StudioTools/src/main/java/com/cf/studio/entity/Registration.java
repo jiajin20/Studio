@@ -1,5 +1,7 @@
 package com.cf.studio.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import java.io.Serializable;
 
@@ -31,6 +33,8 @@ public class Registration implements Serializable {
      * 签到码
      */
     private String signInCode;
+    private Date signtime;
+    private int clubid;
 
 
     public Integer getUserId() {
@@ -72,6 +76,21 @@ public class Registration implements Serializable {
     public void setSignInCode(String signInCode) {
         this.signInCode = signInCode;
     }
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
+    public Date getSigntime() {
+        return signtime;
+    }
 
+    public void setSigntime(Date signtime) {
+        this.signtime = signtime;
+    }
+
+    public int getClubid() {
+        return clubid;
+    }
+
+    public void setClubid(int clubid) {
+        this.clubid = clubid;
+    }
 }
 
