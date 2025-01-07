@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+    <script src="/js/vue.min.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/param.js"></script>
+    <script src="/js/flexible.js" type="text/javascript"></script>
+    <script src="/js/zepto.min.js" type="text/javascript"></script>
+    <style>
+        @media (max-width: 768px) {
+            /* 移动端样式 */
+            #mobile-login {
+                display: block;
+            }
+
+            #desktop-login {
+                display: none;
+            }
+        }
+        @media (min-width: 769px) {
+
+            /* 桌面端样式 */
+            #mobile-login {
+                display: none;
+            }
+
+            #desktop-login {
+                display: block;
+            }
+        }
+    </style>
+    <script>
+        // 根据当前页面加载不同的 CSS 文件
+        const loadStylesheet = (href) => {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = href;
+            document.head.appendChild(link);
+        };
+        // 根据屏幕宽度判断加载桌面端或移动端样式
+        const loadAppropriateStylesheet = () => {
+            const isMobile = window.innerWidth <= 768; // 判断是否为移动端
+            if (isMobile) {
+                loadStylesheet('/css/style.css'); // 加载移动端样式
+            } else {
+                loadStylesheet('/css/login.css'); // 加载桌面端样式
+            }
+        };
+        // 在页面加载时加载样式
+        window.onload = () => {
+            loadAppropriateStylesheet();
+        };
+        // 窗口大小改变时重新加载样式
+        window.onresize = () => {
+            loadAppropriateStylesheet();
+        };
+    </script>
+</head>
+
+<body>
+    <div class="shell" id="app">
+        <!-- 移动端 -->
+        <div id="mobile-login" v-if="isMobileLoginVisible">
+            <div class="head">
+                <div class="img">
+                    <img src="/picture/head.png">
+                </div>
+                <p>欢迎回来</p>
+            </div>
+            <form action="#">
+                <div class="item">
+                    <input type="text" name="name" maxlength="11" placeholder="请输入您的帐号" autocomplete="off" class="name">
+                </div>
+                <div class="item">
+                    <input type="text" name="vcode" maxlength="6" placeholder="请输入验证码" autocomplete="off" class="vcode">
+                    <span id="vcode">发送验证码</span>
+                </div>
+                <div class="item">
+                    <input type="password" name="password" placeholder="请再次输入您的密码" autocomplete="off" class="password">
+                </div>
+                <p>忘记密码</p>
+                <div class="submit"><button>登&nbsp;陆</button></div>
+            </form>
+            <div class="other-login">
+                <p><span>使用第三方帐号登陆</span></p>
+                <div class="third">
+                    <ul>
+                        <p><span>还在努力中</span></p>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer">
+                <img src="static/picture/logo.png">
+                <p>登录使用就表示同意用户协议<a href="javascript:;">条款</a>和<a href="javascript:;">隐私</a>政策</p>
+            </div>
+        </div>
+        <!-- 桌面端 -->
+        <div id="desktop-login" v-if="isDesktopLoginVisible">
+            <!-- 注册 -->
+            <div class="container b-container" id="b-container">
+                <form @submit.prevent="onRegisterSubmit" class="form" id="a-form">
+                    <h2 class="form_title title">创建账号</h2>
+                    <div class="form_icons">
+                        <i class="iconfont icon-QQ" href="/index"></i>
+                        <i class="iconfont icon-weixin" href="/index"></i>
+                        <i class="iconfont icon-bilibili-line" href="/index"></i>
+                    </div>
+                    <span class="form_span">欢迎加入我们</span>
+                    <input type="text" v-model="form.account" class="form_input" id="signup-name" placeholder="账号">
+                    <input type="password" v-model="form.password" class="form_input" id="signup-password"
+                        placeholder="密码" @input="checkPasswordStrength">
+                    <span id="password-strength-message" style="color: red;"></span>
+                    <input type="email" v-model="form.email" class="form_input" id="signup-email" placeholder="邮箱"
+                        @blur="validateEmail">
+                    <span id="email-error-message" style="color: red;"></span>
+                    <button type="button" id="btnGetVcode" @click="getVerificationCode"
+                        style="position: relative;top: -43px;left: 121px;" :disabled="isVcodeDisabled"
+                        :class="['vcode-btn', { 'disabled': isVcodeDisabled || !isFormValid }]">
+                        {{ buttonText }}
+                    </button>
+                    <input type="text" id="vcode" v-model="form.vcode" placeholder="请输入验证码" class="form_input" style="position:relative;top: -33px;">
+                    <span id="message" style="color: red;"></span>
+                    <button type="submit" class="form_button button submit" id="signup-button" style="position:relative;top: -30px;">注册</button>
+                    <div class="footer" style="margin-top: 10px;">
+                        <p>注册就表示同意用户协议<a href="javascript:;">条款</a>和<a href="javascript:;">隐私</a>政策</p>
+                    </div>
+                </form>
+
+            </div>
+            <!-- 登录 -->
+            <div class="container a-container" id="a-container">
+                <form @submit.prevent="onSubmit" id="b-form" class="form" action="/user/login" method="post">
+                    <h2 class="form_title title">登入账号</h2>
+                    <div class="form_icons">
+                        <a href="/index">
+                            <i class="iconfont icon-QQ"></i>
+                            <i class="iconfont icon-weixin"></i>
+                            <i class="iconfont icon-bilibili-line"></i>
+                        </a>
+                    </div>
+                    <span class="form_span">欢迎</span>
+                    <input type="text" v-model="form.account" class="form_input" id="login-email" placeholder="账号"
+                        name="account">
+                    <input type="password" v-model="form.password" class="form_input" id="login-password"
+                        placeholder="密码" name="password">
+                    <button type="submit" class="form_button button submit" id="login-button">登录</button>
+
+                    <div class="footer" style="margin-top: 10px;">
+                        <p>登录使用就表示同意用户协议<a href="javascript:;">条款</a>和<a href="javascript:;">隐私</a>政策</p>
+                    </div>
+                </form>
+            </div>
+            <!-- 引言 -->
+            <div class="switch" id="switch-cnt">
+                <div class="switch_circle"></div>
+                <div class="switch_circle switch_circle-t"></div>
+                <div class="switch_container" id="switch-c1">
+                    <h2 class="switch_title title" style="letter-spacing: 0; font-size: 30px;">
+                        {{ errorMessage || 'WelcomeBack' }}
+                    </h2>
+                    <p class="switch_description description">已经有账号了嘛，去登入账号来进入奇妙世界吧！！！</p>
+                    <button class="switch_button button switch-btn" @click="toggleForm">SIGN IN</button>
+                </div>
+                <div class="switch_container is-hidden" id="switch-c2">
+                    <h2 class="switch_title title" style="letter-spacing: 0; font-size: 30px;">
+                        {{ errorMessage || 'HelloFriend!' }}
+                    </h2>
+                    <p class="switch_description description">去注册一个账号，成为尊贵的粉丝会员，让我们踏入奇妙的旅途！</p>
+                    <button class="switch_button button switch-btn" @click="toggleForm">SIGN UP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    form: {
+                        account: "",
+                        password: "",
+                        email: "",
+                        vcode: ""
+                    },
+                    errorMessage: "",
+                    buttonText: "获取验证码",
+                    isVcodeDisabled: false,
+                    vcodeTimer: 60,
+                    vcodeExpiration: 5 * 60 * 1000,
+                    vcodeSentTime: null,
+                    isMobileLoginVisible: window.innerWidth <= 768,
+                    isDesktopLoginVisible: window.innerWidth > 768
+                };
+            },
+            computed: {
+                // 计算表单是否有效
+                isFormValid() {
+                    return this.form.account.length > 0 && this.form.password.length > 0;
+                }
+            },
+
+            methods: {
+                toggleForm() {
+                    const switchCtn = document.querySelector("#switch-cnt");
+                    const switchCircle = document.querySelectorAll(".switch_circle");
+                    const switchC1 = document.querySelector("#switch-c1");
+                    const switchC2 = document.querySelector("#switch-c2");
+                    const aContainer = document.querySelector("#a-container");
+                    const bContainer = document.querySelector("#b-container");
+                    switchCtn.classList.add("is-gx");
+                    setTimeout(function () {
+                        switchCtn.classList.remove("is-gx");
+                    }, 1500);
+                    switchCtn.classList.toggle("is-txr");
+                    switchCircle[0].classList.toggle("is-txr");
+                    switchCircle[1].classList.toggle("is-txr");
+                    switchC1.classList.toggle("is-hidden");
+                    switchC2.classList.toggle("is-hidden");
+                    aContainer.classList.toggle("is-txl");
+                    bContainer.classList.toggle("is-txl");
+                    bContainer.classList.toggle("is-z");
+                },
+                checkPasswordStrength() {
+                    const password = this.form.password;
+                    const message = document.getElementById("password-strength-message");
+                    const regexWeak = /^(?=.*[a-zA-Z]).{6,}$/;
+                    const regexStrong = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
+                    if (regexStrong.test(password)) {
+                        message.textContent = "强密码";
+                        message.style.color = "green";
+                    } else if (regexWeak.test(password)) {
+                        message.textContent = "弱密码";
+                        message.style.color = "orange";
+                    } else {
+                        message.textContent = "密码过短";
+                        message.style.color = "red";
+                    }
+                },
+                validateEmail() {
+                    const email = this.form.email;
+                    const emailErrorMessage = document.getElementById("email-error-message");
+                    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+                    if (!emailRegex.test(email)) {
+                        emailErrorMessage.textContent = "请输入有效的邮箱";
+                    } else {
+                        emailErrorMessage.textContent = "";
+                    }
+                },
+                getVerificationCode() {
+                    // 如果验证码正在倒计时，或者表单无效，则直接返回
+                    if (this.isVcodeDisabled || !this.isFormValid) return;
+                    // 启动倒计时
+                    this.isVcodeDisabled = true;
+                    this.buttonText = `${this.vcodeTimer}秒后重新获取`;
+                    // 设置验证码发送时间
+                    this.vcodeSentTime = Date.now();
+                    const interval = setInterval(() => {
+                        this.vcodeTimer--;
+                        this.buttonText = `${this.vcodeTimer}秒后重新获取`;
+
+                        if (this.vcodeTimer <= 0) {
+                            clearInterval(interval);
+                            this.isVcodeDisabled = false;
+                            this.buttonText = "获取验证码";
+                            this.vcodeTimer = 60;  // 重置倒计时
+                        }
+                    }, 1000);
+                },
+
+                onRegisterSubmit() {
+                    console.log("Register Form Submitted", this.form);
+                },
+                onSubmit() {
+                    console.log("Login Form Submitted", this.form);
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>
