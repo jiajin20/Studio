@@ -18,6 +18,7 @@
             <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
             <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
             <spring-boot.version>2.6.13</spring-boot.version>
+            <fastjson.version>1.2.72</fastjson.version>
             <knife4j.version>4.0.0</knife4j.version>
             <springdoc.version>1.6.15</springdoc.version>
             <mybatis.version>3.4.2</mybatis.version>
@@ -97,6 +98,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-thymeleaf</artifactId>
             </dependency>
+            <!-- FastJSON 处理响应数据格式 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
 
 
 

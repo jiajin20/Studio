@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,18 +16,15 @@
             #mobile-login {
                 display: block;
             }
-
             #desktop-login {
                 display: none;
             }
         }
         @media (min-width: 769px) {
-
             /* 桌面端样式 */
             #mobile-login {
                 display: none;
             }
-
             #desktop-login {
                 display: block;
             }
@@ -45,60 +41,106 @@
         };
         // 根据屏幕宽度判断加载桌面端或移动端样式
         const loadAppropriateStylesheet = () => {
-            const isMobile = window.innerWidth <= 768; // 判断是否为移动端
+            const isMobile = window.innerWidth <= 768; 
             if (isMobile) {
-                loadStylesheet('/css/style.css'); // 加载移动端样式
+                loadStylesheet('/css/login_ph.css'); 
             } else {
-                loadStylesheet('/css/login.css'); // 加载桌面端样式
+                loadStylesheet('/css/login_pc.css'); 
             }
         };
-        // 在页面加载时加载样式
         window.onload = () => {
             loadAppropriateStylesheet();
         };
-        // 窗口大小改变时重新加载样式
         window.onresize = () => {
             loadAppropriateStylesheet();
         };
     </script>
 </head>
-
 <body>
     <div class="shell" id="app">
         <!-- 移动端 -->
         <div id="mobile-login" v-if="isMobileLoginVisible">
-            <div class="head">
-                <div class="img">
-                    <img src="/picture/head.png">
+            <!-- 登录表单 -->
+            <div v-if="!isRegister">
+                <div class="head">
+                    <div class="img">
+                        <img src="/picture/head.png">
+                    </div>
+                    <p>欢迎回来</p>
                 </div>
-                <p>欢迎回来</p>
+                <form @submit.prevent="onSubmit">
+                    <div class="item">
+                        <input type="text" name="email" v-model="form.email" placeholder="请输入您的邮箱" autocomplete="off"
+                            class="email" :disabled="loading">
+                    </div>
+                    <div class="item">
+                        <input type="password" name="password" v-model="form.password" placeholder="请输入密码"
+                            autocomplete="off" class="password" :disabled="loading">
+                    </div>
+                    <p v-if="errorMessage" class="error-message" style="color: red; font-weight: bolder;">{{
+                        errorMessage }}</p>
+                    <p @click="toggleForm_1" class="toggle-register">没有账号？点击注册</p>
+                    <div class="submit">
+                        <button :disabled="loading">登&nbsp;陆</button>
+                    </div>
+                </form>
+                <div class="other-login">
+                    <p><span>使用第三方帐号登陆</span></p>
+                    <div class="third">
+                        <ul>
+                            <p><span>还在努力中</span></p>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer">
+                    <img src="static/picture/logo.png">
+                    <p>登录使用就表示同意用户协议<a href="javascript:;">条款</a>和<a href="javascript:;">隐私</a>政策</p>
+                </div>
+
+
             </div>
-            <form action="#">
-                <div class="item">
-                    <input type="text" name="name" maxlength="11" placeholder="请输入您的帐号" autocomplete="off" class="name">
+
+            <!-- 注册表单 -->
+            <div v-if="isRegister">
+                <div class="head">
+                    <div class="img">
+                        <img src="/picture/head.png">
+                    </div>
+                    <p>注册账号</p>
                 </div>
-                <div class="item">
-                    <input type="text" name="vcode" maxlength="6" placeholder="请输入验证码" autocomplete="off" class="vcode">
-                    <span id="vcode">发送验证码</span>
-                </div>
-                <div class="item">
-                    <input type="password" name="password" placeholder="请再次输入您的密码" autocomplete="off" class="password">
-                </div>
-                <p>忘记密码</p>
-                <div class="submit"><button>登&nbsp;陆</button></div>
-            </form>
-            <div class="other-login">
-                <p><span>使用第三方帐号登陆</span></p>
-                <div class="third">
-                    <ul>
-                        <p><span>还在努力中</span></p>
-                    </ul>
+                <form @submit.prevent="onRegisterSubmit">
+                    <div class="item">
+                        <input type="text" v-model="form.name" name="name" placeholder="请输入您的姓名" autocomplete="off"
+                            class="name" :disabled="loading">
+                    </div>
+                    <div class="item">
+                        <input type="text" v-model="form.email" name="email" placeholder="请输入您的邮箱" autocomplete="off"
+                            class="email" :disabled="loading">
+                    </div>
+                    <div class="item">
+                        <input type="text" v-model="form.vcode" name="vcode" maxlength="6" placeholder="请输入验证码"
+                            autocomplete="off" class="vcode" :disabled="loading">
+                        <span id="vcode" @click="getVerificationCode" :disabled="isVcodeDisabled || !isFormValid"
+                            :class="['vcode-btn', { 'disabled': isVcodeDisabled || !isFormValid }]">
+                            {{ buttonText }}
+                        </span>
+                    </div>
+
+                    <div class="item">
+                        <input type="password" v-model="form.password" name="password" placeholder="请输入密码"
+                            autocomplete="off" class="password" :disabled="loading">
+                    </div>
+                    <p v-if="errorMessage" class="error-message" style="color: red; font-weight: bolder;">{{
+                        errorMessage }}</p>
+                    <p>已有账号？<a @click="toggleForm_1">点击登录</a></p>
+                    <div class="submit"><button :disabled="loading">注&nbsp;册</button></div>
+                </form>
+                <div class="footer">
+                    <img src="static/picture/logo.png">
+                    <p>注册即表示同意<a href="javascript:;">用户协议</a>和<a href="javascript:;">隐私</a>政策</p>
                 </div>
             </div>
-            <div class="footer">
-                <img src="static/picture/logo.png">
-                <p>登录使用就表示同意用户协议<a href="javascript:;">条款</a>和<a href="javascript:;">隐私</a>政策</p>
-            </div>
+
         </div>
         <!-- 桌面端 -->
         <div id="desktop-login" v-if="isDesktopLoginVisible">
@@ -112,7 +154,7 @@
                         <i class="iconfont icon-bilibili-line" href="/index"></i>
                     </div>
                     <span class="form_span">欢迎加入我们</span>
-                    <input type="text" v-model="form.account" class="form_input" id="signup-name" placeholder="账号">
+                    <input type="text" v-model="form.name" class="form_input" id="signup-name" placeholder="用户名">
                     <input type="password" v-model="form.password" class="form_input" id="signup-password"
                         placeholder="密码" @input="checkPasswordStrength">
                     <span id="password-strength-message" style="color: red;"></span>
@@ -124,9 +166,11 @@
                         :class="['vcode-btn', { 'disabled': isVcodeDisabled || !isFormValid }]">
                         {{ buttonText }}
                     </button>
-                    <input type="text" id="vcode" v-model="form.vcode" placeholder="请输入验证码" class="form_input" style="position:relative;top: -33px;">
+                    <input type="text" id="vcode" v-model="form.vcode" placeholder="请输入验证码" class="form_input"
+                        style="position:relative;top: -33px;">
                     <span id="message" style="color: red;"></span>
-                    <button type="submit" class="form_button button submit" id="signup-button" style="position:relative;top: -30px;">注册</button>
+                    <button type="submit" class="form_button button submit" id="signup-button"
+                        style="position:relative;top: -30px;">注册</button>
                     <div class="footer" style="margin-top: 10px;">
                         <p>注册就表示同意用户协议<a href="javascript:;">条款</a>和<a href="javascript:;">隐私</a>政策</p>
                     </div>
@@ -135,7 +179,7 @@
             </div>
             <!-- 登录 -->
             <div class="container a-container" id="a-container">
-                <form @submit.prevent="onSubmit" id="b-form" class="form" action="/user/login" method="post">
+                <form @submit.prevent="onSubmit" id="b-form" class="form">
                     <h2 class="form_title title">登入账号</h2>
                     <div class="form_icons">
                         <a href="/index">
@@ -145,8 +189,8 @@
                         </a>
                     </div>
                     <span class="form_span">欢迎</span>
-                    <input type="text" v-model="form.account" class="form_input" id="login-email" placeholder="账号"
-                        name="account">
+                    <input type="text" v-model="form.email" class="form_input" id="login-email" placeholder="账号"
+                        name="email">
                     <input type="password" v-model="form.password" class="form_input" id="login-password"
                         placeholder="密码" name="password">
                     <button type="submit" class="form_button button submit" id="login-button">登录</button>
@@ -182,29 +226,35 @@
             el: '#app',
             data() {
                 return {
+                    showPassword: false,
+                    loading: false,
                     form: {
-                        account: "",
+                        name: "",
                         password: "",
                         email: "",
                         vcode: ""
                     },
                     errorMessage: "",
+                    successMessage: "",
+                    failedAttempts: 0,
+                    maxAttempts: 5,
                     buttonText: "获取验证码",
                     isVcodeDisabled: false,
                     vcodeTimer: 60,
                     vcodeExpiration: 5 * 60 * 1000,
                     vcodeSentTime: null,
                     isMobileLoginVisible: window.innerWidth <= 768,
-                    isDesktopLoginVisible: window.innerWidth > 768
+                    isDesktopLoginVisible: window.innerWidth > 768,
+                    isMobileLoginVisible: true,
+                    isRegister: false,
+                    showCaptcha: false
                 };
             },
             computed: {
-                // 计算表单是否有效
                 isFormValid() {
-                    return this.form.account.length > 0 && this.form.password.length > 0;
+                    return this.form.email.length > 0 && this.form.password.length > 0;
                 }
             },
-
             methods: {
                 toggleForm() {
                     const switchCtn = document.querySelector("#switch-cnt");
@@ -226,63 +276,191 @@
                     bContainer.classList.toggle("is-txl");
                     bContainer.classList.toggle("is-z");
                 },
+                toggleForm_1() {
+                    this.isRegister = !this.isRegister;
+                },
+                validateForm() {
+                    if (!this.form.email || !this.form.password) {
+                        this.showErrorMessage("账号和密码不能为空");
+                        return false;
+                    }
+                    return true;
+                },
                 checkPasswordStrength() {
                     const password = this.form.password;
-                    const message = document.getElementById("password-strength-message");
-                    const regexWeak = /^(?=.*[a-zA-Z]).{6,}$/;
-                    const regexStrong = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
-                    if (regexStrong.test(password)) {
-                        message.textContent = "强密码";
-                        message.style.color = "green";
-                    } else if (regexWeak.test(password)) {
-                        message.textContent = "弱密码";
-                        message.style.color = "orange";
-                    } else {
-                        message.textContent = "密码过短";
-                        message.style.color = "red";
+                    const strengthMessage = document.getElementById('password-strength-message');
+                    const regExp = {
+                        upper: /[A-Z]/,
+                        lower: /[a-z]/,
+                        digit: /\d/,
+                        special: /[!@#$%^&*(),.?":{}|<>]/
+                    };
+                    let strength = 0;
+                    if (password.length >= 8) strength++;
+                    if (regExp.upper.test(password)) strength++;
+                    if (regExp.lower.test(password)) strength++;
+                    if (regExp.digit.test(password)) strength++;
+                    if (regExp.special.test(password)) strength++;
+
+                    switch (strength) {
+                        case 0:
+                        case 1:
+                            strengthMessage.textContent = "密码太弱";
+                            strengthMessage.style.color = "red";
+                            break;
+                        case 2:
+                        case 3:
+                            strengthMessage.textContent = "密码一般";
+                            strengthMessage.style.color = "orange";
+                            break;
+                        case 4:
+                            strengthMessage.textContent = "密码强";
+                            strengthMessage.style.color = "green";
+                            break;
                     }
+                },
+                showErrorMessage(message) {
+                    this.errorMessage = message;
+                    setTimeout(() => {
+                        this.errorMessage = "";
+                    }, 3000);
                 },
                 validateEmail() {
                     const email = this.form.email;
-                    const emailErrorMessage = document.getElementById("email-error-message");
-                    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-                    if (!emailRegex.test(email)) {
-                        emailErrorMessage.textContent = "请输入有效的邮箱";
+                    const emailErrorMessage = document.getElementById('email-error-message');
+                    const regExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+                    if (!regExp.test(email)) {
+                        emailErrorMessage.textContent = "请输入有效的邮箱地址";
+                        emailErrorMessage.style.color = "red";
+                        this.isVcodeDisabled = true;
                     } else {
                         emailErrorMessage.textContent = "";
+                        this.isVcodeDisabled = false;
+                    }
+                },
+                validateEmail_1() {
+                    const email = this.form.email;
+                    const regExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+                    if (!regExp.test(email)) {
+                        this.isVcodeDisabled = true;  // 禁用验证码按钮
+                        this.errorMessage = "请输入有效的邮箱地址！";  // 显示错误消息
+                        return false;  // 返回 false，阻止发送验证码
+                    } else {
+                        this.isVcodeDisabled = false;  // 启用验证码按钮
+                        this.errorMessage = "";  // 清空错误消息
+                        return true;  // 邮箱格式正确，允许发送验证码
                     }
                 },
                 getVerificationCode() {
-                    // 如果验证码正在倒计时，或者表单无效，则直接返回
-                    if (this.isVcodeDisabled || !this.isFormValid) return;
-                    // 启动倒计时
-                    this.isVcodeDisabled = true;
-                    this.buttonText = `${this.vcodeTimer}秒后重新获取`;
-                    // 设置验证码发送时间
-                    this.vcodeSentTime = Date.now();
-                    const interval = setInterval(() => {
-                        this.vcodeTimer--;
-                        this.buttonText = `${this.vcodeTimer}秒后重新获取`;
+                    if (!this.validateEmail_1()) {
+                        return;  
+                    }
 
-                        if (this.vcodeTimer <= 0) {
-                            clearInterval(interval);
-                            this.isVcodeDisabled = false;
+                    if (this.isVcodeDisabled) {
+                        return;  
+                    }
+                    this.isVcodeDisabled = true;
+                    this.startVcodeCooldown(this.vcodeTimer);
+                    axios.get(`/user/getCode?email=${this.form.email}`)
+                        .then(response => {
+                            if (response.data && response.data.code === 0) {
+                                this.vcodeSentTime = Date.now();
+                                sessionStorage.setItem("vcodeSentTime", this.vcodeSentTime);
+                            } else {
+                                this.showErrorMessage(response.data.msg || "验证码获取失败，请稍后重试");
+                            }
+                        })
+                        .catch(error => {
+                            this.showErrorMessage("获取验证码失败，请稍后再试");
+                        });
+                },
+                startVcodeCooldown(time) {
+                    const btn = document.getElementById("btnGetVcode");
+                    let countdown = setInterval(() => {
+                        if (time > 0) {
+                            this.buttonText = `(${time}s) 重新获取`;
+                            time--;
+                        } else {
+                            clearInterval(countdown);
                             this.buttonText = "获取验证码";
-                            this.vcodeTimer = 60;  // 重置倒计时
+                            this.isVcodeDisabled = false;
                         }
                     }, 1000);
                 },
-
                 onRegisterSubmit() {
-                    console.log("Register Form Submitted", this.form);
+                    this.loading = true;
+                    if (!this.validateForm()) {
+                        this.loading = false;
+                        return;
+                    }
+                    if (!this.form.vcode) {
+                        this.showErrorMessage("请输入验证码！");
+                        this.loading = false;
+                        return;
+                    }
+                    // 校验验证码是否过期
+                    const vcodeSentTime = sessionStorage.getItem("vcodeSentTime");
+                    if (vcodeSentTime) {
+                        const currentTime = Date.now();
+                        const timeDifference = currentTime - vcodeSentTime;
+                        if (timeDifference > this.vcodeExpiration) {
+                            this.showErrorMessage("验证码已过期，请重新获取");
+                            this.loading = false;
+                            return;
+                        }
+                    }
+                    // 发送注册请求
+                    axios.post('/user/register', this.form)
+                        .then(response => {
+                            if (response.data && response.data.code === 0) {
+                                this.successMessage = "注册成功！可以登录了！";
+                                alert(this.successMessage);
+                                window.location.href = '/login';
+                            } else {
+                                this.showErrorMessage(response.data.msg || "注册失败，请稍后再试！");
+                            }
+                        })
+                        .catch(error => {
+                            this.showErrorMessage("注册失败，请稍后再试！");
+                        })
+                        .finally(() => {
+                            this.loading = false;
+                        });
                 },
                 onSubmit() {
-                    console.log("Login Form Submitted", this.form);
+                    this.loading = true;
+                    if (this.failedAttempts >= this.maxAttempts) {
+                        this.showCaptcha = true;
+                    }
+
+                    if (!this.validateForm()) {
+                        this.loading = false;
+                        return;
+                    }
+                    axios.post('/user/login', this.form)
+                        .then(response => {
+                            console.log('Login response:', response); 
+
+                            if (response.data && response.data.code === 0) {
+                                const user = response.data.data.user;
+                                window.location.href = '/index';
+                            } else {
+                                this.failedAttempts++;
+                                this.showErrorMessage(response.data.msg || "登录失败，请稍后再试");
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Login error:', error);
+                            this.showErrorMessage("网络错误，请稍后再试");
+                        })
+                        .finally(() => {
+                            this.loading = false;
+                        });
                 }
             }
         });
     </script>
-
 </body>
 
 </html>

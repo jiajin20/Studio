@@ -1,8 +1,12 @@
 package com.cf.studio.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.cf.studio.dto.LoginRequest;
+import com.cf.studio.dto.RegisterRequest;
 import com.cf.studio.entity.User;
 import com.cf.studio.service.UserService;
 import com.cf.studio.util.EmailUtil;
+import com.cf.studio.util.JwtUtil;
 import com.cf.studio.util.PasswordUtil;
 import com.cf.studio.util.R;
 
@@ -23,13 +27,16 @@ public class UserController {
 
     //登录
     @PostMapping("/login")
-    public R login(@RequestParam("email") String email,
-                   @RequestParam("password") String password) {
-
+    public R login(@RequestBody LoginRequest loginRequest) {
+        String email = loginRequest.getEmail();
+        String password = loginRequest.getPassword();
         String passwordhash = userService.getUserPassword(email);
         boolean result = passwordUtil.checkPassword(password, passwordhash);
         if (result==true){
-        return R.successMsg("登录成功");
+            String token = JwtUtil.createToken(email);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("token", token);
+        return R.success("登录成功", jsonObject);
         }
         return R.error("登录失败");
     }
@@ -64,11 +71,11 @@ public class UserController {
     }
     //注册用户
     @PostMapping("/register")
-    public R register(@RequestParam("name")String name,
-                      @RequestParam("email")String email,
-                      @RequestParam("password")String password,
-                      @RequestParam("vcode")String code,
-                      HttpSession session) {
+    public R register(@RequestBody RegisterRequest registerRequest, HttpSession session) {
+        String name = registerRequest.getName();
+        String email = registerRequest.getEmail();
+        String password = registerRequest.getPassword();
+        String code = registerRequest.getVcode();
         String sessionCode = (String) session.getAttribute("emailCode");
         if (sessionCode == null) {
             return R.error("验证码已过期，请重新获取验证码");
