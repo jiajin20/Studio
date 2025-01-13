@@ -12,6 +12,8 @@ import com.cf.studio.util.R;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -24,7 +26,6 @@ public class UserController {
     private UserService userService;
 
     private PasswordUtil passwordUtil;
-
     //登录
     @PostMapping("/login")
     public R login(@RequestBody LoginRequest loginRequest) {
@@ -55,7 +56,6 @@ public class UserController {
         session.setMaxInactiveInterval(2 * 60);
         return R.successMsg("验证码已发送到您的邮箱，请注意查收");
     }
-
     // 验证验证码的接口
     @PostMapping("/verifyCode")
     public R verifyCode(@RequestParam("email") String email, @RequestParam("vcode") String code, HttpSession session) {
@@ -94,6 +94,25 @@ public class UserController {
             }
         } catch (RuntimeException e) {
             return R.error(e.getMessage());
+        }
+    }
+    //更新用户信息
+    @PutMapping("/update")
+    public ResponseEntity<String> updateUser(
+            @RequestParam(value = "bio", required = false) String bio,
+            @RequestParam(value = "qq", required = false) String qq,
+            @RequestParam(value = "wechat", required = false) String wechat,
+            @RequestParam(value = "sexy", required = false) String sexy,
+            @RequestParam(value = "password", required = false) String password,
+            @RequestParam(value = "username", required = false) String username,
+            @RequestParam("userid") int userid) {
+        String encodedPassword = passwordUtil.encryptPassword(password);
+        int result = userService.updateUser(bio, qq, wechat, sexy, encodedPassword, username, userid);
+        if (result > 0) {
+            return ResponseEntity.ok("用户信息更新成功");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("用户信息更新失败");
         }
     }
 }

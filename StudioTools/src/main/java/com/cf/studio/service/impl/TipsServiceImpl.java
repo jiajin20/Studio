@@ -12,17 +12,14 @@ import java.util.List;
 public class TipsServiceImpl implements TipsService {
     @Autowired
     private TipsMapper tipsMapper;
-
-
-
+    //发送通知
     @Override
     public int sendTips( String title, String content, String senderName, String type, String receiverName) {
         return tipsMapper.insertTips(title, content, senderName, type, receiverName);
     }
-
+    //获取通知
     @Override
     public List<Notification> getTips( ) {
         return tipsMapper.selectTips();
     }
-
 }

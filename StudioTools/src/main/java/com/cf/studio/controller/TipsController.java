@@ -14,7 +14,7 @@ import java.util.List;
 public class TipsController {
     @Autowired
     private TipsService tipsService;
-
+//发布通知
     @PostMapping("/send")
     public R send(@RequestParam("title") String title,
                   @RequestParam("content") String content,
@@ -27,7 +27,7 @@ public class TipsController {
             return R.error("发布失败");
         }
     }
-    
+// 获取通知
     @GetMapping("/get")
     public ResponseEntity<List<Notification>> get() {
       return ResponseEntity.ok(tipsService.getTips());

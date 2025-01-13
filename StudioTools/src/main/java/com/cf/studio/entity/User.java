@@ -44,6 +44,33 @@ public class User implements Serializable {
      */
     private Date joinDate;
 
+    private String qq;
+    private String wechat;
+    private String sexy;
+
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
+    }
+
+    public String getWechat() {
+        return wechat;
+    }
+
+    public void setWechat(String wechat) {
+        this.wechat = wechat;
+    }
+
+    public String getSexy() {
+        return sexy;
+    }
+
+    public void setSexy(String sexy) {
+        this.sexy = sexy;
+    }
 
     public Integer getId() {
         return id;
@@ -120,6 +147,9 @@ public class User implements Serializable {
                 ", avatar='" + avatar + '\'' +
                 ", bio='" + bio + '\'' +
                 ", joinDate=" + joinDate +
+                ", qq='" + qq + '\'' +
+                ", wechat='" + wechat + '\'' +
+                ", sexy='" + sexy + '\'' +
                 '}';
     }
 }

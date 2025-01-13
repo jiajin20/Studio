@@ -19,6 +19,8 @@ import java.util.UUID;
 public class ClubController {
     @Autowired
     private ClubService clubService;
+
+    //创建工作室
     @PostMapping("/create")
     private R createClub(@RequestParam("name")String name,
                          @RequestParam("description")String description,
@@ -30,10 +32,12 @@ public class ClubController {
             return R.error("创建失败");
         }
     }
+    //获取工作室列表
     @GetMapping("/list")
     private ResponseEntity <List<Club>>listClubs() {
         return ResponseEntity.ok(clubService.getAllClubs());
     }
+    //上传工作室logo
     @PostMapping("imgUpDown")
     public R imgUpDown(@RequestParam("file") MultipartFile file, @RequestParam("id") int ID) throws IOException, SQLException {
         String fileName = UUID.randomUUID() + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));

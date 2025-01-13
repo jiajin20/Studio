@@ -12,16 +12,17 @@ import java.util.List;
 public class ClubServiceImpl implements ClubService {
     @Autowired
     private ClubMapper clubMapper;
+    // 添加工作室
     @Override
     public int insertClub(String name, String description, String advisorName) {
        return clubMapper.insertClub(name, description, advisorName);
     }
-
+    // 获取所有工作室
     @Override
     public List<Club> getAllClubs() {
         return clubMapper.getAllClubs();
     }
-
+    //更新工作室logo
     @Override
     public int updatelogo(int id, String logo) {
         return clubMapper.updateClubLogo(id, logo);

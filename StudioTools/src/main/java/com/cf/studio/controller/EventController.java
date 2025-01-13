@@ -19,6 +19,7 @@ import java.util.List;
 public class EventController {
     @Autowired
     private EventService eventService;
+    // 添加活动
     @PostMapping("/addEvent")
     public R addEvent(@RequestParam("name")String name,
                       @RequestParam("description")String description,
@@ -39,12 +40,12 @@ public class EventController {
 
         }
     }
-
-
+    //根据工作室id获取活动
     @PostMapping("/getEventByClubId")
     public ResponseEntity<List<Event>> getEventByClubId(@RequestParam("id")int id){
         return ResponseEntity.ok(eventService.getEventByClubId(id));
     }
+    //根据活动id获取活动
     @PostMapping("/signup")
     public R signup(@RequestParam("userid")int userid,
                     @RequestParam("eventid")int eventid,
@@ -57,5 +58,4 @@ public class EventController {
             return R.error("签到失败");
         }
     }
-
 }

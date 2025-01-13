@@ -20,5 +20,4 @@ public class LoginRequest {
         this.password = password;
     }
 
-    // Getter 和 Setter 方法
 }
