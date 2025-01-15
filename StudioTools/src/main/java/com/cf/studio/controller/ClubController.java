@@ -3,6 +3,7 @@ package com.cf.studio.controller;
 import com.cf.studio.entity.Club;
 import com.cf.studio.service.ClubService;
 import com.cf.studio.util.R;
+import com.cf.studio.util.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,7 @@ public class ClubController {
     //获取工作室列表
     @GetMapping("/list")
     private ResponseEntity <List<Club>>listClubs() {
+        System.out.println(UserContext.getUserId());
         return ResponseEntity.ok(clubService.getAllClubs());
     }
     //上传工作室logo

@@ -38,5 +38,10 @@ public interface UserMapper {
          "</script>"
  })
  int updateUser(@Param("user") UserDto user, @Param("updates") Map<String, Object> updates);
-
+//获取用户信息
+ @Select("select username,email,avatar,bio,qq,wechat,sexy,join_date from user where id=#{id}")
+ User getUserById(int id);
+//获取用户id通过email
+ @Select("select id from user where email=#{email}")
+ int getUserIdByEmail(String email);
 }

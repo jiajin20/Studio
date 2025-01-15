@@ -1,5 +1,7 @@
 package com.cf.studio.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import java.io.Serializable;
 
@@ -127,7 +129,7 @@ public class User implements Serializable {
     public void setBio(String bio) {
         this.bio = bio;
     }
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm", timezone = "Asia/Shanghai")
     public Date getJoinDate() {
         return joinDate;
     }

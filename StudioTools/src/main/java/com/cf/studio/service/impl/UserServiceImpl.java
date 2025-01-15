@@ -49,4 +49,15 @@ public class UserServiceImpl implements UserService {
         return userMapper.updateUser(user, updates);
     }
 
+    @Override
+    public User getUserById(int id) {
+        User user = userMapper.getUserById(id);
+        return user;
+    }
+
+    @Override
+    public int getUseridByEmail(String email) {
+        return userMapper.getUserIdByEmail(email);
+    }
+
 }
