@@ -1,6 +1,7 @@
 package com.cf.studio.mapper;
 
 import com.cf.studio.entity.Club;
+import com.cf.studio.entity.Userclub;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -15,6 +16,9 @@ public interface ClubMapper {
     //获取所有工作室信息
     @Select("select * from club ")
     List<Club> getAllClubs();
+    //获取工作室信息根据工作室id
+    @Select("select * from userclub where club_id=#{id}")
+    List<Userclub> getClubById(int id);
     //更新工作室logo
     @Update("update club set logo=#{logo} where id=#{id}")
     int updateClubLogo(int id, String logo);

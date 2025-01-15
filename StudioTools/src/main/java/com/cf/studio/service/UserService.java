@@ -11,5 +11,9 @@ public interface UserService {
  int register(String name, String password, String email,String role);
  //修改用户信息
  int updateUser(String bio,String qq,String wechat,String Sexy, String password,String username,int userid);
+ //获取用户信息
+ User getUserById(int id);
+ //获取用户id根据email
+ int getUseridByEmail(String email);
 }
 

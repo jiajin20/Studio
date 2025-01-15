@@ -1,8 +1,10 @@
 package com.cf.studio.controller;
 
 import com.cf.studio.entity.Club;
+import com.cf.studio.entity.Userclub;
 import com.cf.studio.service.ClubService;
 import com.cf.studio.util.R;
+import com.cf.studio.util.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,5 +54,10 @@ public class ClubController {
         String imgurl = fileName;
         clubService.updatelogo(ID, imgurl);
         return R.success("上传社团logo成功", imgurl);
+    }
+    //获取工作室成员信息
+    @GetMapping("/getclubsmember")
+    public ResponseEntity <List<Userclub>> getClubById(@RequestParam("clubid") int id) {
+        return ResponseEntity.ok(clubService.getClubById(id));
     }
 }

@@ -26,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 映射静态资源路径，但不覆盖 Swagger UI 的路径
-        registry.addResourceHandler("/resources/**")
+        registry.addResourceHandler("/static/**")
                 .addResourceLocations("classpath:/static/", "file:" + System.getProperty("user.dir") + "/static/img/");
 
         // 映射 Swagger UI 资源
@@ -40,8 +40,14 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("")  // 拦截所有请求
                 .excludePathPatterns(
-                        "/static/**", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs", "/webjars/**",
-                        "/doc.html"  // 排除 Swagger UI 路径
+                        //资源路径
+                        "/static/**",  "/static/**","/","/static/",
+                        "/doc.html", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs", "/webjars/**","/resources/**",
+                        //页面跳转
+                        "/login","/index",
+                        //接口路径
+                        "/user/login","/user/register","/user/verifyCode","user/getCode","user/getUserById"
+
                 );
     }
 }

@@ -1,15 +1,21 @@
 package com.cf.studio.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.cf.studio.dto.LoginRequest;
 import com.cf.studio.dto.RegisterRequest;
 import com.cf.studio.entity.User;
+import com.cf.studio.entity.Userclub;
+import com.cf.studio.mapper.UserMapper;
+import com.cf.studio.service.ClubService;
 import com.cf.studio.service.UserService;
 import com.cf.studio.util.EmailUtil;
 import com.cf.studio.util.JwtUtil;
 import com.cf.studio.util.PasswordUtil;
 import com.cf.studio.util.R;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -22,8 +28,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
+    private ClubService clubService;
 
     private PasswordUtil passwordUtil;
     //登录
@@ -34,9 +42,11 @@ public class UserController {
         String passwordhash = userService.getUserPassword(email);
         boolean result = passwordUtil.checkPassword(password, passwordhash);
         if (result==true){
-            String token = JwtUtil.createToken(email);
+            int userid = userService.getUseridByEmail(email);
+            log.info("用户：{}", userid);
+            String token = JwtUtil.createToken(userid);
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("token", token);
+            jsonObject.put("token",token);
         return R.success("登录成功", jsonObject);
         }
         return R.error("登录失败");
@@ -115,4 +125,11 @@ public class UserController {
                     .body("用户信息更新失败");
         }
     }
+    //获取用户信息
+    @GetMapping("/getUserById")
+    public R getUserById(@RequestParam("id") int id) {
+        User user = userService.getUserById(id);
+        return R.success("获取用户信息成功", user);
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.cf.studio.service;
 
 import com.cf.studio.entity.Club;
+import com.cf.studio.entity.Userclub;
 
 import java.util.List;
 
@@ -11,4 +12,6 @@ public interface ClubService {
     List<Club> getAllClubs();
     //更新工作室logo
     int updatelogo(int id, String logo);
+    //获取工作室成员信息根据工作室id
+    List<Userclub> getClubById(int id);
 }

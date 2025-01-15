@@ -1,6 +1,7 @@
 package com.cf.studio.service.impl;
 
 import com.cf.studio.entity.Club;
+import com.cf.studio.entity.Userclub;
 import com.cf.studio.mapper.ClubMapper;
 import com.cf.studio.service.ClubService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,10 @@ public class ClubServiceImpl implements ClubService {
     @Override
     public int updatelogo(int id, String logo) {
         return clubMapper.updateClubLogo(id, logo);
+    }
+
+    @Override
+    public List<Userclub> getClubById(int id) {
+       return clubMapper.getClubById(id);
     }
 }

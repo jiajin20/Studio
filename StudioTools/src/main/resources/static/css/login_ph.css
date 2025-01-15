@@ -14,7 +14,7 @@
 body {
     width: 100%;
     overflow-x: hidden;
-    background: url(/images/top_bg.png) top left no-repeat;
+    background: url(/static/images/top_bg.png) top left no-repeat;
     background-size: 100%;
 }
 
@@ -85,20 +85,20 @@ form .item input {
 }
 
 form .item input.name {
-    background: url(/images/icon-phone.png) left .3rem center no-repeat;
+    background: url(/static/images/icon-phone.png) left .3rem center no-repeat;
     background-size: .23rem .35rem;
 }
 form .item input.email {
-    background: url(/images/icon-email.png) left .3rem center no-repeat;
+    background: url(/static/images/icon-email.png) left .3rem center no-repeat;
     background-size: .23rem .35rem;
 }
 form .item input.vcode {
-    background: url(/images/icon-verify.png) left .3rem center no-repeat;
+    background: url(/static/images/icon-verify.png) left .3rem center no-repeat;
     background-size: .33rem .33rem;
 }
 
 form .item input.password {
-    background: url(/images/icon-lock.png) left .3rem center no-repeat;
+    background: url(/static/images/icon-lock.png) left .3rem center no-repeat;
     background-size: .22rem .32rem;
 }
 
